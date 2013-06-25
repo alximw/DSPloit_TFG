@@ -124,6 +124,12 @@
             android:screenOrientation="landscape" >
         </activity>
         <activity
+            android:name=".plugins.mitm.Extractor"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_activity_main"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
             android:name=".plugins.LoginCracker"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_main"

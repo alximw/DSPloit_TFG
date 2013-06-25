@@ -435,6 +435,33 @@ public class MITM extends Plugin
         mScriptPicker.setAction( Intent.ACTION_GET_CONTENT );
         mScriptPicker.putExtra( Intent.EXTRA_LOCAL_ONLY, true );
         
+        
+        mActions.add(new Action(
+        		"Semantic Extractor",
+        		"Gather semantic information from the traffic",
+        		R.drawable.action_sniffer,
+        		new OnClickListener(){
+        		@Override
+        		public void onClick( View v ) 
+        			{				
+        				if( System.checkNetworking( MITM.this ) == false )
+        					return;
+        				
+        				setStoppedState();
+        				
+        				startActivity
+                        ( 
+                          new Intent
+                          ( 
+                        	MITM.this, 
+                        	Extractor.class
+                          ) 
+                        );
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+        			}
+
+        		}));   
+
         mActions.add( new Action
         ( 
         	"Simple Sniff", 
@@ -962,7 +989,8 @@ public class MITM extends Plugin
 				else
 					setStoppedState();
 			}
-		}));        
+		})); 
+         
 	}
 	
 	@Override
