@@ -1,7 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp" >
+    
+	
+	<ToggleButton
+        android:id="@+id/sniffToggleButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textOff="Start"
+        android:textOn="Stop" />
+	
+	<View
+        android:id="@+id/separator"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/sniffToggleButton"
+        android:background="@android:color/darker_gray" />
+	
+	<ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/separator"
+        android:layout_alignParentBottom="true"
+        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" >
+
+    </ListView>
     
 
 </RelativeLayout>
