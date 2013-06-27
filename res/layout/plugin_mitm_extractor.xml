@@ -7,26 +7,25 @@
     
 	
 	<ToggleButton
-        android:id="@+id/sniffToggleButton"
+        android:id="@+id/startTargetListingButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textOff="Start"
+        android:textOff="Look For Targets"
         android:textOn="Stop" />
 	
 	<View
-        android:id="@+id/separator"
+        android:id="@+id/separatorBar"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/sniffToggleButton"
-        android:background="@android:color/darker_gray" />
+        android:layout_below="@+id/startTargetListingButton"
+        android:background="@android:color/white" />
 	
 	<ListView
-        android:id="@+id/listView"
+        android:id="@+id/targetList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/separator"
+        android:layout_below="@+id/separatorBar"
         android:layout_alignParentBottom="true"
-        android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
         android:paddingLeft="5dp"
         android:paddingRight="5dp" >
 
