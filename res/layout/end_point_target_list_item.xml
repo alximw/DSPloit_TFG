@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
     
+    
+    <TextView
+        android:id="@+id/IPAddresField"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textColor="#FFFFFF" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/MacAddresField"
+        android:layout_below="@id/IPAddresField"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textColor="#FFFFFF" />
+    
+    <TextView
+        android:id="@+id/MacVendorField"
+        android:layout_below="@id/MacAddresField"
+        android:layout_marginTop="2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textColor="#FFFFFF" />
+    
+    
+</RelativeLayout>

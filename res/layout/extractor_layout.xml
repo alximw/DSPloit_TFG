@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/ExtTargetIP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:text="Device IP:" />
+
+    <TextView
+        android:id="@+id/ExtTargetMac"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ExtTargetIP"
+        android:paddingBottom="5dp"
+        android:text="Device MAC:" />
+
+    <TextView
+        android:id="@+id/ExtTargetUserAgent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ExtTargetMac"
+        android:paddingBottom="5dp"
+        android:text="User Agent:" />
+    
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/ExtTargetUserAgent"
+        android:background="@android:color/white" />
+
+    
+    <ListView
+        android:id="@+id/httpGETlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ExtTargetUserAgent"
+        android:layout_alignParentBottom="true"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" >
+    </ListView>
+
+    <ToggleButton
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_alignBottom="@+id/ExtTargetMac"
+        android:layout_alignParentRight="true" 
+        android:textOn="Lstenning.."
+        android:textOff="Listen"
+        />
+
+</RelativeLayout>
