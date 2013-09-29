@@ -297,6 +297,7 @@ public class Shell
 		
 		try
 		{
+			
 			writer.writeBytes( command + "\n" );
 			writer.flush();
 			
@@ -359,6 +360,7 @@ public class Shell
 	public static int exec( String command, OutputReceiver reciever ) throws IOException, InterruptedException {
 		return exec( command, reciever, true );
 	}
+	
 	
 	public static int exec( String command ) throws IOException, InterruptedException {
 		return exec( command, null, true );

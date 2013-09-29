@@ -3,20 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     
-    
     <TextView
         android:id="@+id/IPAddresField"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:textColor="#FFFFFF" />
-
     <TextView
         android:id="@+id/MacAddresField"
         android:layout_below="@id/IPAddresField"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:textColor="#FFFFFF" />
-    
     <TextView
         android:id="@+id/MacVendorField"
         android:layout_below="@id/MacAddresField"
@@ -24,6 +21,5 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:textColor="#FFFFFF" />
-    
     
 </RelativeLayout>

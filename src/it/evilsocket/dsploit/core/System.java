@@ -488,7 +488,7 @@ public class System
 		return mStoragePath;
 	}
 	
-	public static SharedPreferences getSettings() {
+	public static SharedPreferences getSettings(){
 		return PreferenceManager.getDefaultSharedPreferences( mContext );
 	}
 	

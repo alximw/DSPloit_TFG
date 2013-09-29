@@ -42,6 +42,56 @@ public class IPTables extends Tool
 		}
 	}
 	
+	
+	public void changeSource( String to ) {
+		
+		try
+		{							
+			super.run("-t nat -A POSTROUTING -j SNAT -p udp --dport 53 --to "+to);	
+		}
+		catch( Exception e )
+		{
+			System.errorLogging( TAG, e );
+		}
+	}
+	
+public void flushNAT( ) {
+		
+		try
+		{							
+			super.run("-t nat -F");	
+		}
+		catch( Exception e )
+		{
+			System.errorLogging( TAG, e );
+		}
+	}
+	
+
+	
+	
+	public void discardForwardding2Port(int port){
+		try
+		{							
+			super.run("-A FORWARD --proto udp --dport "+String.valueOf(port)+" -j DROP");	
+		}
+		catch( Exception e )
+		{
+			System.errorLogging( TAG, e );
+		}
+	}
+	
+	public void allowForwardding2Port(int port){
+		try
+		{							
+			super.run("-A FORWARD --proto udp --dport "+String.valueOf(port)+" -j ACCEPT");	
+		}
+		catch( Exception e )
+		{
+			System.errorLogging( TAG, e );
+		}
+	}
+	
 	public void undoTrafficRedirect( String to ) {
 		Log.d( TAG, "Undoing traffic redirection" );
 		

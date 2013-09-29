@@ -1,3 +1,21 @@
+/*
+ * This file is part of the dSploit.
+ *
+ * Copyleft of Simone Margaritelli aka evilsocket <evilsocket@gmail.com>
+ *
+ * dSploit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * dSploit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with dSploit.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package it.evilsocket.dsploit.plugins.mitm;
 
 import it.evilsocket.dsploit.R;
@@ -6,21 +24,13 @@ import it.evilsocket.dsploit.core.System;
 import it.evilsocket.dsploit.core.Shell.OutputReceiver;
 import it.evilsocket.dsploit.net.Endpoint;
 import it.evilsocket.dsploit.plugins.mitm.SpoofSession.OnSessionReadyListener;
-
-import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,14 +47,13 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class ExtractorTargetChooser extends  SherlockActivity {
 
-	static String DEBUG_TAG="TFG_UC3M";
 	static boolean DEBUG_ENABLED=false;
 	
-	 //views used on this activity
+	 //views displayed on this activity
 	private ToggleButton			startStopListing			=null;
 	private ListView 				targetList					=null;
 	
-	//spoofSession object->create an ARP spoof sesion
+	//spoofSession object->create an ARP spoof session
 	private SpoofSession			spoofSession				=null;
 
 	
@@ -52,63 +61,54 @@ public class ExtractorTargetChooser extends  SherlockActivity {
 	private boolean lookingForTargets							=false;
 	
 	
-	/*
-	 * This pcap filter will show only packets which dest and src ip are not localhost and
-	 * the current protocol it's not ARP, will show the packet's ethernet header too. 
-	 */
-	private static final String  PCAP_FILTER = " -e not '(src host localhost or dst host localhost or arp)'";
+
 	
-	//This pcap filter will show only http traffic including its ethernet header  
-	private static final String PCAP_FILTER_HTTP= "-eA '(dst port 80 or src port 80)' ";
+	//This pcap filter will show only http traffic including its Ethernet header  
+	private static final String PCAP_FILTER_HTTP= "-eA dst port 80 or dst port 443 or src port 80 or src port 443 ";
 	
-	//static String regexb="^.+length\\s+(\\d+)\\)\\s+([\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3})\\.[^\\s]+\\s+>\\s+([\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3})\\.[^\\:]+:.+";
-	//static String regexd="^.+(([0-9a-fA-F]{2}[\\:-]){5}([0-9A-Fa-f]{2}))\\s\\(.+\\s.+\\)\\s\\>\\s(([0-9a-fA-F]{2}[\\:-]){5}([0-9A-Fa-f]{2})).+";
 
 	/*
-	 * Regex that accepts standard packet including SRC and DST ip/MAC and payload 
+	 * This regex validates packet including Ethernet and IP header plus payload 
 	 */
-	static String regexc="^.+(([0-9a-fA-F]{2}[\\:-]){5}([0-9A-Fa-f]{2}))\\s\\(.+\\s.+\\)\\s\\>\\s(([0-9a-fA-F]{2}[\\:-]){5}([0-9A-Fa-f]{2})).+length\\s+(\\d+)\\)\\s+([\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3})\\.[^\\s]+\\s+>\\s+([\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3})\\.[^\\:]+:.+";
+	static String regexc="^.+(([0-9a-fA-F]{2}[\\:-]){5}([0-9A-Fa-f]{2}))\\s\\(.+\\s.+\\)\\s\\>\\s(([0-9a-fA-F]{2}[\\:-]){5}([0-9A-Fa-f]{2}))." +
+			"+length\\s+(\\d+)\\)\\s+([\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3})\\.[^\\s]+\\s+>\\s+([\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3})\\.[^\\:]+:.+";
 	
-	//pattern used to compile regexc
+	//pattern  to compile regexc
 	private static Pattern 			PARSER 	 					=null; 
 
+	//Adapter object for listview
 	private static EndPointTargetAdapter adapter				=null;
 	
 
 	
 	/*
 	 * This object will contain the information about the
-	 * endpoints showed on the target list.
+	 * endpoints shown on the target list.
 	 */
 	public  class EndPointTarget extends Endpoint
 	{
-
 		public EndPointTarget(InetAddress address, byte[] hardware) {
 			super(address, hardware);
 		}
-		
-		
+	
 		public EndPointTarget(String address, String hardware) {
 			super(address, hardware);
 		}
-
-
-		
-
 	}
 	
 
 	
 	public static class EndPointTargetAdapter extends ArrayAdapter<EndPointTarget>
 	{
-		int rowLayout;
-		Context adapterContext	=	null;
-		ArrayList<EndPointTarget> targetList;
+		int rowLayout;		//layout ID 
+		Context adapterContext	=	null;	//context
+		ArrayList<EndPointTarget> targetList;	//list of found targets
+		
+		//holder class which works as row view's cache
 		static class ElementHolder{
 			TextView macAddres;
 			TextView IPAddres;
 			TextView macVendor;
-			
 		}
 		
 		public EndPointTargetAdapter(Context context,int layout) {
@@ -132,30 +132,26 @@ public class ExtractorTargetChooser extends  SherlockActivity {
 			ElementHolder holder;
 				//convertView saves the view of the current element if it has benn inflated before
 			View listElement=convertView;
-			
-				/*
+							/*
 				 * If this is the first time the element is inflated (convertiview==NULL)
 				 * inflate it and create a new holder on which you can save the view references
 				 * instead of search them in the layout tree.
 				 */
 			if(listElement==null)
 			{
-			
 				LayoutInflater inflater=(LayoutInflater) adapterContext.getSystemService(LAYOUT_INFLATER_SERVICE);
 				listElement=inflater.inflate(rowLayout, null,false );
-			
 				holder=new ElementHolder();
 				holder.IPAddres=(TextView)listElement.findViewById(R.id.IPAddresField);
 				holder.macAddres=(TextView)listElement.findViewById(R.id.MacAddresField);
 				holder.macVendor=(TextView)listElement.findViewById(R.id.MacVendorField);
-				
 				listElement.setTag(holder);
+			
 			}else{
-				
+			
 				// if the layout has been inflated before, we just retrieve the holder...
 				 
-				holder=(ElementHolder)listElement.getTag();
-				
+				holder=(ElementHolder)listElement.getTag();	
 			}
 				
 			
@@ -169,7 +165,6 @@ public class ExtractorTargetChooser extends  SherlockActivity {
 			}else{
 			holder.macVendor.setText(System.getMacVendor(targetList.get(position).getHardware()));
 			}
-			showDebug(getListElement(position).getAddress().toString()+" "+targetList.get(position).getHardwareAsString()+" "+System.getMacVendor(targetList.get(position).getHardware()));
 			
 			
 			return listElement;
@@ -178,22 +173,15 @@ public class ExtractorTargetChooser extends  SherlockActivity {
 		
 		
 		public synchronized void addTarget(EndPointTarget newtarget){
-			boolean targetAdded=false;
-			
-			for(EndPointTarget target:targetList){
-				
+			boolean targetAdded=false;		
+			for(EndPointTarget target:targetList){			
 				if( target.getAddress().equals(newtarget.getAddress()) ){
 					targetAdded=true;
 					break;
-				}
-				
-			}
-			
+				}		
+			}			
 			if(!targetAdded){ 
-				showDebug("Added Target!");
 				targetList.add(newtarget);
-				showDebug(String.valueOf(getCount()));
-			
 			}
 		}
 		 
@@ -224,23 +212,20 @@ public class ExtractorTargetChooser extends  SherlockActivity {
         targetList =(ListView)findViewById(R.id.targetList);
 
         //set new OnclickListener for the button
-        startStopListing.setOnClickListener(new OnClickListener() {
-			
+        startStopListing.setOnClickListener(new OnClickListener() {			
         	@Override
-        	public void onClick(View v) {
-        		
+        	public void onClick(View v) {	
         		if(lookingForTargets){
         			setStoppedState();
         		}else{
         			setStartedState();	
         		}
-        		
         	}
         });
         //compile the regular expression
         PARSER=Pattern.compile(regexc);
         
-        //initialize the spoofSession object, not using proxy nor server
+        //initialize the spoofSession object, not using proxy or server
         spoofSession	   = new SpoofSession( false, false, null, null );
 
         //create a new target list adapter
@@ -255,15 +240,12 @@ public class ExtractorTargetChooser extends  SherlockActivity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View element, int position,long id) {
 				//in case of active search, stop it
-					setStoppedState();
-					
+					setStoppedState();					
 					Intent intent=new Intent(getApplicationContext(), Extractor.class);
 					intent.putExtra("target_IP", adapter.getListElement(position).getAddress().toString().replace("/", ""));
 					intent.putExtra("target_MAC", adapter.getListElement(position).getHardwareAsString());
 					startActivity(intent);
 			}
-		
-        
         });
 
 	}
@@ -304,7 +286,6 @@ public class ExtractorTargetChooser extends  SherlockActivity {
 										//save it to the list
 										final EndPointTarget target=source;
 										
-										//optimize this! use AsyncTask instead of runOnUiThread
 										ExtractorTargetChooser.this.runOnUiThread(new Runnable() {
 											
 											@Override
@@ -319,7 +300,6 @@ public class ExtractorTargetChooser extends  SherlockActivity {
 									
 									if(System.getNetwork().isInternal(matcher.group(9))){
 										
-										showDebug("internal node (DST)");
 										//save it to the list
 										final EndPointTarget target=destiny;
 											
@@ -367,17 +347,10 @@ public class ExtractorTargetChooser extends  SherlockActivity {
 	}
 	
 
-	public static void showDebug(String message){
-		if(DEBUG_ENABLED){
-			Log.d(DEBUG_TAG, message);
-		}
-	}
+	
 	
 	
 	/*
-	 * 
-	 * this two methods do the same:
-	 * 
 	 * ->onOptionsItemSelected takes you to the parent activity when actionBar arrow is pressed
 	 * 
 	 * ->onbackPressed does the same but when  the back button on the device is pressed

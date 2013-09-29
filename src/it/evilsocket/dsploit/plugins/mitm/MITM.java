@@ -439,7 +439,7 @@ public class MITM extends Plugin
         mActions.add(new Action(
         		"Semantic Extractor",
         		"Gather semantic information from the traffic",
-        		R.drawable.action_sniffer,
+        		R.drawable.action_extractor,
         		new OnClickListener(){
         		@Override
         		public void onClick( View v ) 
@@ -454,13 +454,39 @@ public class MITM extends Plugin
                           new Intent
                           ( 
                         	MITM.this, 
-                        	Extractor.class
+                        	ExtractorTargetChooser.class
                           ) 
                         );
                         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         			}
 
-        		}));   
+        		}));
+        
+        mActions.add(new Action(
+        		"DNS Spoof",
+        		"Spoof dns responses",
+        		R.drawable.action_dns,
+        		new OnClickListener(){
+        		@Override
+        		public void onClick( View v ) 
+        			{				
+        				if( System.checkNetworking( MITM.this ) == false )
+        					return;
+        				
+        				setStoppedState();
+        				
+        				startActivity
+                        ( 
+                          new Intent
+                          ( 
+                        	MITM.this, 
+                        	DNSSpoof.class
+                          ) 
+                        );
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+        			}
+
+        		}));
 
         mActions.add( new Action
         ( 

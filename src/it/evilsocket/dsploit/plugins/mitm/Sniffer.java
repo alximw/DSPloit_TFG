@@ -27,12 +27,15 @@ import java.util.regex.Pattern;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 
+import it.evilsocket.dsploit.ActionActivity;
+import it.evilsocket.dsploit.MainActivity;
 import it.evilsocket.dsploit.R;
 import it.evilsocket.dsploit.core.System;
 import it.evilsocket.dsploit.core.Shell.OutputReceiver;
 import it.evilsocket.dsploit.gui.dialogs.ConfirmDialog;
 import it.evilsocket.dsploit.gui.dialogs.ErrorDialog;
 import it.evilsocket.dsploit.gui.dialogs.ConfirmDialog.ConfirmDialogListener;
+import it.evilsocket.dsploit.net.Endpoint;
 import it.evilsocket.dsploit.net.Target;
 import it.evilsocket.dsploit.plugins.mitm.SpoofSession.OnSessionReadyListener;
 import android.content.Context;
@@ -262,6 +265,7 @@ public class Sniffer extends SherlockActivity
 	        return row;
 	    }
 	}
+	
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);        

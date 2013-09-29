@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" 
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    >
     
     <ImageView 
         android:layout_width="wrap_content"
@@ -17,8 +20,49 @@
         android:layout_height="fill_parent"        
         android:layout_toRightOf="@+id/req_favicon"
         android:id="@+id/req_host"
+        android:paddingBottom="5dp"
         />
-    
+    <TextView 
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"   
+        android:layout_below="@+id/req_host"     
+        android:layout_toRightOf="@+id/req_favicon"
+        android:id="@+id/user_Agent"
+        android:paddingBottom="5dp"
+        />
+    <TextView 
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_Agent"        
+        android:layout_toRightOf="@+id/req_favicon"
+        android:id="@+id/cookies"
+        android:paddingBottom="5dp"
+        />
+     <TextView 
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"    
+        android:layout_below="@+id/cookies"    
+        android:layout_toRightOf="@+id/req_favicon"
+        android:id="@+id/numberOfRequest"
+        android:paddingBottom="5dp"
+        />
+     
+     <TextView 
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"    
+        android:layout_below="@+id/numberOfRequest"    
+        android:layout_toRightOf="@+id/req_favicon"
+        android:id="@+id/RequestDate"
+        android:paddingBottom="5dp"
+        />
+    <TextView 
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content"    
+        android:layout_below="@+id/RequestDate"    
+        android:layout_toRightOf="@+id/req_favicon"
+        android:id="@+id/requestURI"
+        android:paddingBottom="5dp"
+        />
     
     
     

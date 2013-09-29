@@ -30,11 +30,14 @@ public class TcpDump extends Tool
 	
 	public Thread sniff( String filter, String pcap, OutputReceiver receiver ) {
 		if( pcap == null )
-			return super.async( "-l -vv -s 0 " + ( filter == null ? "" : filter ), receiver );
+			return super.async( "-i wlan0 -l -vv -s 0 " + ( filter == null ? "" : filter ), receiver );
 		
 		else
-			return super.async( "-l -vv -s 0 -w '" + pcap + "' " + ( filter == null ? "" : filter ), receiver );
+			return super.async( "-i wlan0 -l -vv -s 0 -w '" + pcap + "' " + ( filter == null ? "" : filter ), receiver );
 	}	
+	
+	
+	
 	
 	public void sniff( OutputReceiver receiver ) {
 		sniff( null, null, receiver );
